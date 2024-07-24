@@ -1,3 +1,3 @@
 {
-    "MONGODB_URI": "mongodb://localhost:27017"
+    "MONGODB_URI": "mongodb+srv://ramish15:ramish123@bagelegance.tfjpyld.mongodb.net/"
 }

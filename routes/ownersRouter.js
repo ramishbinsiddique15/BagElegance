@@ -5,7 +5,7 @@ const { loginAdmin, logoutAdmin } = require("../controllers/authController");
 const bcryptjs = require("bcryptjs");
 const isAdmin = require("../middlewares/isAdmin");
 
-if (process.env.NODE_ENV === "development") {
+
   router.post("/create", async (req, res) => {
     let owners = await ownerModel.find();
     if (owners.length > 0) {
@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === "development") {
       });
     });
   });
-} 
+
 
 router.get("/admin", isAdmin, (req, res) => {
   let success = req.flash("success");
