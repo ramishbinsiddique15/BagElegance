@@ -28,6 +28,8 @@ app.use(
 app.use(flash());
 
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
 
 app.use("/", indexRouter);
 app.use("/owners", ownersRouter);
