@@ -7,6 +7,13 @@
         </span>
     </div>
     <% } %>
+    <% if(success.length>0){ %>
+        <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-green-500">
+            <span class="inline-block mt-1 mb-1 text-white">
+                <%= success %>
+            </span>
+        </div>
+        <% } %>
     <h3 class="text-4xl text-center pt-2">Welcome to Bag<span class="text-blue-400 font-semibold">Elegance</span></h3>
             <div class="w-full flex flex-col sm:flex-row px-1 sm:px-10">
                 <div class="sm:w-1/2 w-full text-center flex py-10  ">

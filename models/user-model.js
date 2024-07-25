@@ -19,6 +19,8 @@ const userSchema = new Schema({
   },
   contact: Number,
   picture: String,
+  verificationToken: { type: String },
+  isVerified: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("user", userSchema);
