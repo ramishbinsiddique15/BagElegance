@@ -1,0 +1,79 @@
+<%- include('./partials/header') %> <% if(success.length>0){ %>
+<div
+  class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-green-500"
+>
+  <span class="inline-block mt-1 mb-1 text-white"> <%= success %> </span>
+</div>
+<% } %> <% if(products.length > 0){ %>
+  <div
+  class="w-full h-screen flex flex-col flex-row items-start px-10 py-5 "
+  >
+  <h3 class="font-semibold text-blue-400 text-xl pb-3">Your Products</h3>
+  <div class="w-full md:w-[80%] flex">
+    <div class="flex flex-wrap items-start justify-center gap-5 pb-5">
+      <% products.forEach(function(product){ %>
+      <div class="w-full md:w-64 shadow-xl">
+        <div
+          class="w-full flex relative justify-center items-center h-52 bg-[<%= product.bgcolor %>]"
+        >
+          <div class="absolute text-black top-1 right-1">
+            <div class="rounded-full px-3 bg-[<%= product.panelcolor %>]">
+              <%= product.quantity %>
+            </div>
+          </div>
+          <div class="absolute text-black top-1 left-1">
+            <a href="/owners/edit/<%= product._id %>">
+              <img width="20" src="/img/edit.png" alt="" />
+            </a>
+          </div>
+          <img
+            class="p-2 w-3/2 h-full"
+            src="data:image/jpeg;base64,<%= product.image.toString('base64') %>"
+            alt=""
+          />
+        </div>
+        <div
+          class="flex bg-[<%= product.panelcolor %>] justify-between items-center px-4 py-4 text-[<%= product.textcolor %>]"
+        >
+          <div>
+            <h3><%= product.name %></h3>
+            <h4>Rs. <%= product.price%>/-</h4>
+          </div>
+          <div class="flex gap-1 items-center">
+            <% if(product.discount > 0){ %>
+            <p
+              class="text-sm bg-[<%= product.bgcolor %>] rounded-full p-1 flex items-center"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                  fill="currentColor"
+                />
+              </svg>
+
+              Rs. <%= product.discount %>/- off
+            </p>
+            <% } %>
+            <a href="/owners/delete/<%= product._id %>">
+              <img width="20" src="/img/delete.png" alt="" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+</div>
+<% } else{ %>
+<div class="w-full h-screen flex justify-center items-center">
+  <h1 class="text-3xl">No Products Found</h1>
+</div>
+<% } %> <%- include('./partials/footer') %>

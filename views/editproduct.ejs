@@ -1,0 +1,41 @@
+<%- include('./partials/header') %>
+    <div class="min-h-screen flex flex-col">
+        <div class="container px-10 py-20 flex flex-col justify-center sm:flex-row flex-grow">
+            
+            <main class="w-3/4 bg-white shadow ">
+                <h2 class="text-xl font-bold mb-4">Edit Your Product</h2>
+                <form action="/products/edit/<%= product._id %>" method="post" enctype="multipart/form-data">
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold mb-2">Product Details</h3>
+                        <div class="mb-4">
+                            <label class="block mb-2 font-medium">Product Image</label>
+                            <% if (product.image) { %>
+                                <div class="mb-4">
+                                    <img width="70" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="Product Image" class="mb-4 max-w-xs">
+                                </div>
+                            <% } %>
+                            <input name="image" type="file" class="py-2 px-4 rounded">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <input value="<%= product.name %>" required name="name" type="text" placeholder="Product Name" class="border p-2 rounded w-full">
+                            <input value="<%= product.price %>" required name="price" type="text" placeholder="Product Price" class="border p-2 rounded w-full">
+                            <input value="<%= product.discount %>" required name="discount" type="text" placeholder="Discount Price" class="border p-2 rounded w-full">
+                            <input value="<%= product.quantity %>" required name="quantity" type="number" placeholder="Product Quantity" class="border p-2 rounded w-full">
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-lg font-semibold mb-2">Panel Details</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <input value="<%= product.bgcolor %>" required name="bgcolor" type="text" placeholder="Background Color" class="border p-2 rounded w-full">
+                            <input value="<%= product.panelcolor %>" required name="panelcolor" type="text" placeholder="Panel Color" class="border p-2 rounded w-full">
+                            <input value="<%= product.textcolor %>" required name="textcolor" type="text" placeholder="Text Color" class="border p-2 rounded w-full">
+                        </div>
+                    </div>
+                    <input class="px-5 py-2 rounded mt-3 bg-yellow-500 text-black hover:bg-yellow-400 cursor-pointer" type="submit"
+                        value="Save Changes">
+                </form>
+            </main>
+        </div>
+    </div>
+    <%- include('./partials/footer') %>

@@ -11,7 +11,7 @@
   <span class="inline-block mt-1 mb-1 text-white"> <%= error %> </span>
 </div>
 <% } %>
-
+<% if(products.length > 0){ %>
 <div
   class="w-full h-screen flex flex-col md:flex-row items-start px-10  py-5 md:py-20"
 >
@@ -47,8 +47,13 @@
       <% products.forEach(function(product){ %>
       <div class="w-full md:w-64 shadow-xl">
         <div
-          class="w-full flex justify-center items-center h-52 bg-[<%= product.bgcolor %>]"
+          class="w-full relative flex justify-center items-center h-52 bg-[<%= product.bgcolor %>]"
         >
+        <div class="absolute text-black top-1 right-1">
+          <div class="rounded-full px-3 bg-[<%= product.panelcolor %>]">
+            <%= product.quantity %>
+          </div>
+        </div>
           <img
             class="p-2 w-3/2 h-full"
             src="data:image/jpeg;base64,<%= product.image.toString('base64') %>"
@@ -98,4 +103,9 @@
     </div>
   </div>
 </div>
+<% } else{ %>
+  <div class="w-full h-screen flex justify-center items-center">
+    <h1 class="text-3xl">No Products Found</h1>
+  </div>
+  <% } %>
 <%- include('./partials/footer') %>

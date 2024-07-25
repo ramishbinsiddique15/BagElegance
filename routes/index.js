@@ -19,16 +19,38 @@ router.get("/shop", isLoggedIn, async (req, res) => {
 });
 
 router.get("/add-to-cart/:id", isLoggedIn, async (req, res) => {
-  let user = await userModel.findOne({ email: req.user.email });
-  let item = user.cart.find(item => item.product.toString() === req.params.id);
-  if (item) {
-    req.flash("error", "Product already in cart");
-    return res.redirect("/shop");
+  try {
+    let user = await userModel.findOne({ email: req.user.email });
+    let product = await productModel.findById(req.params.id);
+
+    if (!product) {
+      req.flash("error", "Product not found");
+      return res.redirect("/shop");
+    }
+
+    if (product.quantity <= 0) {
+      req.flash("error", "Product out of stock");
+      return res.redirect("/shop");
+    }
+
+    let item = user.cart.find(item => item.product.toString() === req.params.id);
+    if (item) {
+      req.flash("error", "Product already in cart");
+      return res.redirect("/shop");
+    }
+
+    user.cart.push({ product: req.params.id, quantity: 1 });
+    product.quantity -= 1;
+
+    await product.save();
+    await user.save();
+    
+    req.flash("success", "Product added to cart");
+    res.redirect("/shop");
+  } catch (err) {
+    req.flash("error", err.message);
+    res.redirect("/shop");
   }
-  user.cart.push({ product: req.params.id, quantity: 1 });
-  await user.save();
-  req.flash("success", "Product added to cart");
-  res.redirect("/shop");
 });
 
 router.get("/cart", isLoggedIn, async (req, res) => {
@@ -46,35 +68,107 @@ router.get("/cart", isLoggedIn, async (req, res) => {
     platform += 20;
   });
 
-  res.render("cart", { user, bill, price, discount, platform });
+  let success = req.flash("success");
+  let error = req.flash("error");
+  res.render("cart", { success, error, user, bill, price, discount, platform });
 });
 
 router.post("/cart/increment/:id", isLoggedIn, async (req, res) => {
-  let user = await userModel.findOne({ email: req.user.email });
-  let item = user.cart.find(item => item.product._id.equals(req.params.id));
-  item.quantity += 1;
-  await user.save();
-  res.redirect("/cart");
+  try {
+    let user = await userModel.findOne({ email: req.user.email });
+    let item = user.cart.find(item => item.product._id.equals(req.params.id));
+    let product = await productModel.findById(req.params.id);
+
+    if (!product) {
+      req.flash("error", "Product not found");
+      return res.redirect("/cart");
+    }
+
+    if (product.quantity <= 0) {
+      req.flash("error", "Product out of stock");
+      return res.redirect("/cart");
+    }
+
+    item.quantity += 1;
+    product.quantity -= 1;
+
+    await user.save();
+    await product.save();
+
+    res.redirect("/cart");
+  } catch (err) {
+    req.flash("error", err.message);
+    res.redirect("/cart");
+  }
 });
 
+
 router.post("/cart/decrement/:id", isLoggedIn, async (req, res) => {
-  let user = await userModel.findOne({ email: req.user.email });
-  let item = user.cart.find(item => item.product._id.equals(req.params.id));
-  if (item.quantity > 1) {
-    item.quantity -= 1;
-  } else {
-    user.cart = user.cart.filter(item => !item.product._id.equals(req.params.id));
+  try {
+    let user = await userModel.findOne({ email: req.user.email });
+    let item = user.cart.find(item => item.product._id.equals(req.params.id));
+    let product = await productModel.findById(req.params.id);
+
+    if (!product) {
+      req.flash("error", "Product not found");
+      return res.redirect("/cart");
+    }
+
+    if (item.quantity > 1) {
+      item.quantity -= 1;
+      product.quantity += 1;
+    } else {
+      user.cart = user.cart.filter(item => !item.product._id.equals(req.params.id));
+      product.quantity += item.quantity;
+    }
+
+    await user.save();
+    await product.save();
+
+    res.redirect("/cart");
+  } catch (err) {
+    req.flash("error", err.message);
+    res.redirect("/cart");
   }
-  await user.save();
-  res.redirect("/cart");
 });
+
 
 
 router.get("/delete/:id", isLoggedIn, async (req, res) => {
-  let user = await userModel.findOne({ email: req.user.email });
-  user.cart.pull(req.params.id);
-  await user.save();
-  res.redirect("/cart");
+  try {
+    let user = await userModel.findOne({ email: req.user.email });
+    let item = user.cart.find(item => item.product._id.equals(req.params.id));
+    
+    if (!item) {
+      req.flash("error", "Product not found in cart");
+      return res.redirect("/cart");
+    }
+    
+    let product = await productModel.findById(req.params.id);
+
+    if (!product) {
+      req.flash("error", "Product not found");
+      return res.redirect("/cart");
+    }
+
+    // Return the quantity to the product model
+    product.quantity += item.quantity;
+
+    // Remove the item from the cart
+    user.cart.pull(item._id);
+
+    await product.save();
+    await user.save();
+
+    req.flash("error", "Product removed from cart");
+    res.redirect("/cart");
+  } catch (err) {
+    req.flash("error", err.message);
+    res.redirect("/cart");
+  }
 });
+
+module.exports = router;
+
 
 module.exports = router;
