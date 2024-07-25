@@ -1,35 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bag Elegance | Exquisite Bags for Every Occasion</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body{
-            overflow-x: hidden;
-        }
+      body {
+        overflow-x: hidden;
+      }
     </style>
-</head>
+  </head>
 
-<body class="font-sans">
-    <nav class="w-full flex md:flex-row flex-col gap-3 justify-between items-center px-5 py-3 bg-[#d5ffff]">
-        <h3 class="text-4xl">Bag<span class="text-blue-400 font-semibold">Elegance</span></h3>
-        <% var loggedin = typeof loggedin !== "undefined"? loggedin : true %>
-        <% var admin = typeof admin !== "undefined"? admin : false %>
-        <% if(loggedin){ %>
-        <div class="flex gap-4">
-            <a class="hover:text-blue-400 flex items-center gap-1 transition-all" href="/shop">Shop <img width="20" src="/img/bag.png" alt=""></a>
-            <a class="hover:text-blue-400 flex items-center gap-1 transition-all" href="/cart">Cart <img width="20" src="/img/shopping-cart.png" alt=""></a>
-            <!-- <a class="hover:text-blue-400 transition-all" href="">My Account</a> -->
-            <a  class="text-red-600" href="/users/logout">Logout</a>
-        </div>
-        <% } %>
-        <% if(admin){ %>
-            <div class="flex gap-4">
-                <a  class="text-red-600" href="/owners/logout">Logout</a>
-            </div>
-            <% } %>
+  <body class="font-sans">
+    <nav
+      class="w-full flex md:flex-row flex-col gap-3 justify-between items-center px-5 py-3 bg-[#d5ffff]"
+    >
+      <h3 class="text-4xl">
+        Bag<span class="text-blue-400 font-semibold">Elegance</span>
+      </h3>
+      <% var loggedin = typeof loggedin !== "undefined"? loggedin : true %> <%
+      var admin = typeof admin !== "undefined"? admin : false %> <%
+      if(loggedin){ %>
+      <div class="flex gap-4">
+        <a
+          class="hover:text-blue-400 flex items-center gap-1 transition-all"
+          href="/shop"
+          >Shop <img width="20" src="/img/bag.png" alt=""
+        /></a>
+        <a
+          class="hover:text-blue-400 flex items-center gap-1 transition-all"
+          href="/cart"
+          >Cart <img width="20" src="/img/shopping-cart.png" alt=""
+        /></a>
+        <!-- <a class="hover:text-blue-400 transition-all" href="">My Account</a> -->
+        <a class="text-red-600" href="/users/logout">Logout</a>
+      </div>
+      <% } %> <% if(admin){ %>
+      <div class="flex gap-4">
+        <a class="text-red-600" href="/owners/logout">Logout</a>
+      </div>
+      <% } %>
     </nav>
+  </body>
+</html>
