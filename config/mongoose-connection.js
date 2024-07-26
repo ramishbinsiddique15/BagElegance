@@ -7,7 +7,7 @@ if (!dbURI) {
   throw new Error('MONGODB_URI environment variable is not set.');
 }
 
-mongoose.connect(`${dbURI}`, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(`${dbURI}`)
   .then(() => {
     dbgr('Connected to MongoDB');
   })

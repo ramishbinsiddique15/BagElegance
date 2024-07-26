@@ -86,7 +86,7 @@ module.exports.verifyEmail = async (req, res) => {
     });
 
     await tempUserModel.deleteOne({ _id: tempUser._id });
-
+    req.flash("success", "Email verified. Please login.");
     res.redirect("/");
   } catch (err) {
     res.send(err.message);
